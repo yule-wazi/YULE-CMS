@@ -1,0 +1,21 @@
+:root {
+  --bg-color: #242424;
+  --mainBg-color: #333;
+  --primary-color: #2992ff;
+  --primary-bg-color: #192e43;
+  --primary-text-color: #fff;
+  --el-bg-color: var(--bg-color) !important;
+  --el-menu-bg-color: var(--bg-color) !important;
+  --el-fill-color-blank: var(--bg-color) !important;
+  --el-menu-text-color: #fff !important;
+  --el-menu-active-color: var(--primary-color) !important;
+  --el-menu-hover-bg-color: var(--primary-bg-color) !important;
+  --el-menu-border-color: var(--bg-color) !important;
+  --el-bg-color-overlay: var(--bg-color) !important;
+  --el-color-primary: var(--primary-color) !important;
+  --el-color-primary-light-9: var(--primary-bg-color) !important;
+  --el-text-color-regular: #fff !important;
+  --el-text-color-primary: #fff !important;
+  --el-fill-color-light: #444 !important;
+  --el-border-color-lighter: #555 !important;
+}
