@@ -5,12 +5,12 @@ const pageHook = () => {
   const pagecontentRef = ref<InstanceType<typeof PageContent>>()
   const handleSearchBtnEmit = (form: any) => {
     if (pagecontentRef.value) {
-      pagecontentRef.value.postDepartmentListInfo(form)
+      pagecontentRef.value.postListInfo(form)
     }
   }
   const handleResetBtnEmit = () => {
     if (pagecontentRef.value) {
-      pagecontentRef.value.postDepartmentListInfo()
+      pagecontentRef.value.postListInfo()
     }
   }
   return {

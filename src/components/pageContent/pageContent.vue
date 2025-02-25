@@ -115,7 +115,7 @@ const isDelete = permissionHook(`${prop.contentConfig.pageName}:delete`)
 const isQuery = permissionHook(`${prop.contentConfig.pageName}:query`)
 const isUpdate = permissionHook(`${prop.contentConfig.pageName}:update`)
 // 获取用户
-const postDepartmentListInfo = (data?: any) => {
+const postListInfo = (data?: any) => {
   if (!isQuery) return
   systemStore.postPageDepartmentListAction(prop.contentConfig.pageName, {
     offset: (currentPage.value - 1) * pageSize.value,
@@ -123,7 +123,7 @@ const postDepartmentListInfo = (data?: any) => {
     ...data
   })
 }
-postDepartmentListInfo()
+postListInfo()
 // 新建用户
 const createUser = () => {
   if (pageDialogRef.value) {
@@ -131,7 +131,7 @@ const createUser = () => {
     pageDialogRef.value.isEdit = false
     // 清空表单勾选框
     nextTick(() => {
-      ElTreeRef.value!.setCheckedKeys([])
+      ElTreeRef.value?.setCheckedKeys([])
     })
     // 清空表单内容
     const form: any = pageDialogRef.value.form
@@ -161,7 +161,7 @@ const editUser = (userInfo: any) => {
     pageDialogRef.value.userId = userInfo.id
     // 填充表单勾选框
     nextTick(() => {
-      ElTreeRef.value!.setCheckedKeys(mapSubMenuId(userInfo.menuList))
+      ElTreeRef.value?.setCheckedKeys(mapSubMenuId(userInfo.menuList))
     })
     const form: any = pageDialogRef.value.form
     // 填充表单内容
@@ -172,10 +172,10 @@ const editUser = (userInfo: any) => {
 }
 // 分页器
 const handleSizeChange = () => {
-  postDepartmentListInfo()
+  postListInfo()
 }
 const handleCurrentChange = () => {
-  postDepartmentListInfo()
+  postListInfo()
 }
 //获取menu列表
 const mainStore = useMain()
@@ -188,7 +188,7 @@ const elTreeCheck = (data1: any, data2: any) => {
 }
 
 // 暴露函数
-defineExpose({ postDepartmentListInfo })
+defineExpose({ postListInfo })
 </script>
 
 <style lang="less" scoped>

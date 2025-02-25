@@ -16,7 +16,6 @@ const searchConfig = {
       type: 'date-picker',
       prop: 'createAt',
       label: '创建时间',
-      placeholder: '请输入查询的部门名称'
     },
   ]
 }
