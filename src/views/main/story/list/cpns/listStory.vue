@@ -1,6 +1,6 @@
 <template>
   <div class="story">
-    <div class="title">{{ item.title }}</div>
+    <div ref="titleRef" class="title">{{ item.title }}</div>
     <div ref="contentRef" class="content"></div>
     <div class="time">{{ formatUTC(item.createAt) }}</div>
   </div>
@@ -14,7 +14,11 @@ interface IStory {
 }
 const prop = defineProps<IStory>()
 const contentRef = ref<HTMLElement>()
+const titleRef = ref<HTMLElement>()
 onMounted(() => {
+  if (titleRef.value) {
+    titleRef.value.innerHTML = prop.item.title
+  }
   if (contentRef.value) {
     contentRef.value.innerHTML = prop.item.content
   }
