@@ -84,7 +84,6 @@ import { formatUTC } from '@/utils/format'
 import { storeToRefs } from 'pinia'
 import { ref } from 'vue'
 import UserDialog from './userDialog.vue'
-import useMain from '@/stores/modules/main/main'
 const systemStore = useSystem()
 const { usersList, totalCount } = storeToRefs(systemStore)
 const currentPage = ref(1)

@@ -5,13 +5,52 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, reactive, watchEffect } from 'vue'
 import BaseEcharts from './baseEcharts.vue'
 
 interface IDirect {
   showGetGoodsCategoryFavor: any
 }
 const prop = defineProps<IDirect>()
+
+interface IData {
+  name: any[],
+  value: any[]
+}
+const data:IData = {
+  name: [],
+  value: []
+}
+const newData:IData = reactive({
+  name: [],
+  value: []
+})
+watchEffect(() => {
+  data.name = prop.showGetGoodsCategoryFavor.name
+  data.value = prop.showGetGoodsCategoryFavor.value
+  // 删除值为空的元素
+  data.value.forEach((item,index) => {
+    if (!item) {
+      data.name.splice(index, 1)
+      data.value.splice(index, 1)
+    }
+  })
+  newData.name = data.name.splice(0, 5)
+  newData.value = data.value.splice(0, 5)
+})
+
+const dynamicData = (data: any) => {
+  newData.name.push(data.name.shift())
+  newData.value.push(data.value.shift())
+
+  data.name.push(newData.name.shift())
+  data.value.push(newData.value.shift())
+}
+
+setInterval(() => {
+  dynamicData(data)
+}, 2000);
+
 const option = computed(() => {
   return {
     tooltip: {
@@ -29,7 +68,7 @@ const option = computed(() => {
     xAxis: [
       {
         type: 'category',
-        data: prop.showGetGoodsCategoryFavor.name,
+        data: newData.name,
         axisTick: {
           alignWithLabel: true
         },
@@ -55,7 +94,7 @@ const option = computed(() => {
         name: '收藏',
         type: 'bar',
         barWidth: '60%',
-        data: prop.showGetGoodsCategoryFavor.value
+        data: newData.value
       }
     ]
   }
