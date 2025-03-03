@@ -9,7 +9,13 @@ const dialogConfig = {
       type: 'input',
       prop: 'name',
       label: '商品名称',
-      placeholder: '请输商品类别名称'
+      placeholder: '请输商品名称'
+    },
+    {
+      type: 'select',
+      prop: 'categoryId',
+      label: '商品类别',
+      placeholder: '请选择品类别'
     },
     {
       type: 'input',

@@ -1,5 +1,6 @@
 const contentConfig = {
   pageName: 'goods',
+  selectName: 'category',
   header: {
     headerTitle: '商品列表',
     buttonTitle: '新建商品'

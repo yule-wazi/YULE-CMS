@@ -16,7 +16,7 @@
           <template v-else-if="item.type === 'select'">
             <el-form-item v-bind="item">
               <el-select v-model="form[item.prop]" :placeholder="item.placeholder">
-                <template v-for="select in departmentList" :key="select.value">
+                <template v-for="select in PageList" :key="select.value">
                   <el-option :label="select.name" :value="select.id" />
                 </template>
               </el-select>
@@ -60,7 +60,7 @@ const centerDialogVisible = ref(false)
 const isEdit = ref(false)
 
 const mainStore = useMain()
-const { departmentList } = storeToRefs(mainStore)
+const { PageList } = storeToRefs(mainStore)
 
 const formList: any = {}
 const dialogFormList: any = prop.dialogConfig.formList
@@ -87,7 +87,6 @@ const confirmBtn = () => {
     systemStore.updatePageDepartmentAction(prop.dialogConfig.pageName, formInfo, userId.value).then(() => {
       // 重新请求数据
       mainStore.postMenuListAction()
-      mainStore.postDepartmentListAction()
       systemStore.postPageDepartmentListAction(prop.dialogConfig.pageName, {
         offset: (prop.pageInfo.currentPage - 1) * prop.pageInfo.pageSize,
         size: prop.pageInfo.pageSize
@@ -98,7 +97,6 @@ const confirmBtn = () => {
     systemStore.postPageNewDepartmentAction(prop.dialogConfig.pageName, formInfo).then(() => {
       // 重新请求数据
       mainStore.postMenuListAction()
-      mainStore.postDepartmentListAction()
       systemStore.postPageDepartmentListAction(prop.dialogConfig.pageName, {
         offset: 0,
         size: prop.pageInfo.pageSize

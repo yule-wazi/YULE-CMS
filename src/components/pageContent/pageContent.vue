@@ -91,7 +91,8 @@ import permissionHook from '@/hook/permissionHook'
 
 interface IContent {
   contentConfig: {
-    pageName: string
+    pageName: string,
+    selectName?: string,
     header: any
     pageList: any[]
     childrenTree?: any
@@ -114,6 +115,7 @@ const isCreate = permissionHook(`${prop.contentConfig.pageName}:create`)
 const isDelete = permissionHook(`${prop.contentConfig.pageName}:delete`)
 const isQuery = permissionHook(`${prop.contentConfig.pageName}:query`)
 const isUpdate = permissionHook(`${prop.contentConfig.pageName}:update`)
+
 // 获取用户
 const postListInfo = (data?: any) => {
   if (!isQuery) return
@@ -125,8 +127,10 @@ const postListInfo = (data?: any) => {
 }
 postListInfo()
 // 新建用户
+const mainStore = useMain()
 const createUser = () => {
   if (pageDialogRef.value) {
+    mainStore.postPageSelectListAction(prop.contentConfig.selectName ?? prop.contentConfig.pageName)
     pageDialogRef.value.showDialog()
     pageDialogRef.value.isEdit = false
     // 清空表单勾选框
@@ -145,7 +149,6 @@ const deleteUser = (id: number) => {
   systemStore.deletePageDepartmentAction(prop.contentConfig.pageName, id).then(() => {
     // 重新请求数据
     mainStore.postMenuListAction()
-    mainStore.postDepartmentListAction()
     systemStore.postPageDepartmentListAction(prop.contentConfig.pageName, {
       offset: (currentPage.value - 1) * pageSize.value,
       size: pageSize.value
@@ -156,6 +159,7 @@ const ElTreeRef = ref<InstanceType<typeof ElTree>>()
 // 编辑用户
 const editUser = (userInfo: any) => {
   if (pageDialogRef.value) {
+    mainStore.postPageSelectListAction(prop.contentConfig.selectName ?? prop.contentConfig.pageName)
     pageDialogRef.value.showDialog()
     pageDialogRef.value.isEdit = true
     pageDialogRef.value.userId = userInfo.id
@@ -178,7 +182,6 @@ const handleCurrentChange = () => {
   postListInfo()
 }
 //获取menu列表
-const mainStore = useMain()
 mainStore.postMenuListAction()
 const { menuList } = storeToRefs(mainStore)
 // 点击menu复选框

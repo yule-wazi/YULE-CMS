@@ -79,8 +79,8 @@ const useLogin = defineStore('login', {
         })
         // 请求（角色/部门）列表
         const mainStore = useMain()
-        mainStore.postRoleListAction()
-        mainStore.postDepartmentListAction()
+        mainStore.postPageSelectListAction('department')
+        mainStore.postPageSelectListAction('role')
       }
     }
   }

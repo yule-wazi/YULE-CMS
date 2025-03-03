@@ -17,3 +17,10 @@ export function postMenuList() {
     url: 'menu/list'
   })
 }
+
+// 公共函数
+export function postPageList(pageName: string) {
+  return hyRequest.post({
+    url: `${pageName}/list`
+  })
+}

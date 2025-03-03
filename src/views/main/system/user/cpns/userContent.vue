@@ -84,6 +84,7 @@ import { formatUTC } from '@/utils/format'
 import { storeToRefs } from 'pinia'
 import { ref } from 'vue'
 import UserDialog from './userDialog.vue'
+import useMain from '@/stores/modules/main/main'
 const systemStore = useSystem()
 const { usersList, totalCount } = storeToRefs(systemStore)
 const currentPage = ref(1)
@@ -113,9 +114,8 @@ const createUser = () => {
 }
 //删除用户
 const deleteUser = (id: number) => {
+  // 重新请求数据
   systemStore.deleteUserListAction(id).then(() => {
-    
-    // 重新请求数据
     systemStore.postUserListAction({
       offset: (currentPage.value - 1) * pageSize.value,
       size: pageSize.value
