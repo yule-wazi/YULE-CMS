@@ -5,7 +5,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, reactive, ref, watchEffect } from 'vue'
+import { computed, reactive, watchEffect } from 'vue'
 import BaseEcharts from './baseEcharts.vue'
 
 interface ILine {
