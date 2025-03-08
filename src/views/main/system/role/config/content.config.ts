@@ -39,7 +39,9 @@ const contentConfig = {
       label: '操作',
       width: '120'
     }
-  ]
+  ],
+  titleHeader: ['ID', '角色名称', '角色介绍', '创建时间', '更新时间'],
+  dataHeader: ['id', 'name', 'intro', 'createAt', 'updateAt']
 }
 
 export default contentConfig

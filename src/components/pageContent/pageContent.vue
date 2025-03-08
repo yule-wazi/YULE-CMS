@@ -4,10 +4,22 @@
       <div class="title">
         {{ prop.contentConfig.header.headerTitle ?? '数据列表' }}
       </div>
-      <div v-if="isCreate" class="addUser">
-        <el-button type="primary" @click="createUser">{{
-          prop.contentConfig.header.buttonTitle ?? '新建列表'
-        }}</el-button>
+      <div class="handleBtn">
+        <div class="exportUser">
+          <el-button v-if="prop.contentConfig.dataHeader" type="success" @click="exportExcel" plain>
+            <span class="icon">
+              <el-icon><Upload /></el-icon>
+            </span>
+            导出
+          </el-button>
+        </div>
+        <div v-if="isCreate" class="addUser">
+          <el-button type="primary" @click="createUser">
+            <span class="icon">
+              <el-icon><Plus /></el-icon>
+            </span>
+            {{ prop.contentConfig.header.buttonTitle ?? '新建列表' }}</el-button>
+        </div>
       </div>
     </div>
     <div class="table">
@@ -79,23 +91,26 @@
 </template>
 
 <script setup lang="ts">
-import useSystem from '@/stores/modules/main/system'
-import { formatUTC } from '@/utils/format'
-import { storeToRefs } from 'pinia'
 import { nextTick, ref } from 'vue'
+import { storeToRefs } from 'pinia'
 import PageDialog from '../pageDialog/pageDialog.vue'
+import useSystem from '@/stores/modules/main/system'
 import useMain from '@/stores/modules/main/main'
 import type { ElTree } from 'element-plus'
+import { formatUTC } from '@/utils/format'
 import { mapSubMenuId } from '@/utils/mapMenus'
+import { export_json_to_excel, formatData } from '@/utils/exportToExcel'
 import permissionHook from '@/hook/permissionHook'
 
 interface IContent {
   contentConfig: {
-    pageName: string,
-    selectName?: string,
+    pageName: string
+    selectName?: string
     header: any
     pageList: any[]
     childrenTree?: any
+    titleHeader?: any[]
+    dataHeader?: any[]
   }
   dialogConfig: {
     pageName: string
@@ -117,15 +132,37 @@ const isQuery = permissionHook(`${prop.contentConfig.pageName}:query`)
 const isUpdate = permissionHook(`${prop.contentConfig.pageName}:update`)
 
 // 获取用户
-const postListInfo = (data?: any) => {
+const postListInfo = (data?: any, exportNumber?: number) => {
   if (!isQuery) return
-  systemStore.postPageDepartmentListAction(prop.contentConfig.pageName, {
-    offset: (currentPage.value - 1) * pageSize.value,
-    size: pageSize.value,
-    ...data
-  })
+  // 用exportNumber来判断是否为导出文件，若数字不为0则将只拿取list返回值并返回
+  return systemStore.postPageDepartmentListAction(
+    prop.contentConfig.pageName,
+    {
+      offset: exportNumber ? 0 : (currentPage.value - 1) * pageSize.value,
+      size: exportNumber ?? pageSize.value,
+      ...data
+    },
+    Boolean(exportNumber)
+  )
 }
 postListInfo()
+// 导出Excel表格
+const exportExcel = () => {
+  if (prop.contentConfig.titleHeader && prop.contentConfig.dataHeader) {
+    const titleHeader = prop.contentConfig.titleHeader
+    const dataHeader = prop.contentConfig.dataHeader
+    postListInfo(undefined, pageTotalCount.value)?.then((response) => {
+      const data = formatData(response, dataHeader)
+      export_json_to_excel({
+        header: titleHeader,
+        data,
+        filename: `YULE-CMS——${prop.contentConfig.pageName}`,
+        autoWidth: true,
+        bookType: 'xlsx'
+      })
+    })
+  }
+}
 // 新建用户
 const mainStore = useMain()
 const createUser = () => {
@@ -204,6 +241,20 @@ defineExpose({ postListInfo })
     align-items: end;
     .title {
       font-size: 25px;
+    }
+    .handleBtn {
+      display: flex;
+      .addUser {
+        .icon {
+          margin-right: 5px;
+        }
+      }
+      .exportUser {
+        .icon {
+          margin-right: 5px;
+        }
+        margin-right: 10px;
+      }
     }
   }
   .table {

@@ -19,7 +19,9 @@ const contentConfig = {
     { type: 'timer', prop: 'createAt', label: '创建时间' },
     { type: 'timer', prop: 'updateAt', label: '更新时间' },
     { type: 'handle', label: '操作', width: '120' }
-  ]
+  ],
+  titleHeader: ['ID', '商品名称', '原价', '现价', '商品介绍', '状态', '图片URL', '库存', '已售', '收藏', '地址', '创建时间', '更新时间'],
+  dataHeader: ['id', 'name', 'oldPrice', 'newPrice', 'desc', 'status', 'imgUrl', 'inventoryCount', 'saleCount', 'favorCount', 'address', 'createAt', 'updateAt']
 }
 
 export default contentConfig

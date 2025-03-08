@@ -13,7 +13,9 @@ const contentConfig = {
     { type: 'timer', prop: 'createAt', label: '创建时间' },
     { type: 'timer', prop: 'updateAt', label: '更新时间' },
     { type: 'handle', label: '操作', width: '120' }
-  ]
+  ],
+  titleHeader: ['ID', '部门名称', '部门领导', '创建事件', '更新事件'],
+  dataHeader: ['id','name', 'leader', 'createAt', 'updateAt']
 }
 
 export default contentConfig

@@ -45,29 +45,28 @@ const useSystem = defineStore('system', {
     },
 
     // page的增删查改
-    async postPageDepartmentListAction(pageName:string, pageInfo: any) {
-      const postPageDepartmentListRes = await postPageList(
-        pageName,
-        pageInfo
-      )
+    async postPageDepartmentListAction(pageName: string, pageInfo: any, isExport?: boolean) {
+      const postPageDepartmentListRes = await postPageList(pageName, pageInfo)
       const { totalCount, list } = postPageDepartmentListRes.data
-      this.pageTotalCount = totalCount
-      this.pageDepartmentList = list
+      if(isExport) {
+        return list
+      } else {
+        this.pageTotalCount = totalCount
+        this.pageDepartmentList = list
+      }
     },
     async deletePageDepartmentAction(pageName: string, pageId: any) {
       const deletePageDepartmentRes = await deletePage(pageName, pageId)
       console.log(deletePageDepartmentRes)
     },
     async postPageNewDepartmentAction(pageName: string, pageInfo: any) {
-      const postPageNewDepartmentRes = await postNewPage(pageName,pageInfo)
+      const postPageNewDepartmentRes = await postNewPage(pageName, pageInfo)
       console.log(postPageNewDepartmentRes)
     },
-    async updatePageDepartmentAction(pageName:string, pageInfo: any, pageId:number ) {
-      const updatePageDepartmentRes = await updatePage(pageName,pageId, pageInfo)
+    async updatePageDepartmentAction(pageName: string, pageInfo: any, pageId: number) {
+      const updatePageDepartmentRes = await updatePage(pageName, pageId, pageInfo)
       console.log(updatePageDepartmentRes)
     }
-
-
   }
 })
 
