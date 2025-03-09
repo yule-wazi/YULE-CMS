@@ -62,5 +62,6 @@ declare module 'vue' {
     PieEchart: typeof import('./src/components/pageEcharts/src/pieEchart.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    UploadDialog: typeof import('./src/components/uploadDialog/uploadDialog.vue')['default']
   }
 }

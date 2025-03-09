@@ -6,13 +6,16 @@
       </div>
       <div class="handleBtn">
         <div v-if="isCreate" class="uploadUser">
-          <input ref="uploadInput" class="upload" type="file" @change="uploadClick" accept=".xlsx, .xls" />
+          <form ref="uploadForm">
+            <input ref="uploadInput" class="upload" type="file" @change="uploadClick" accept=".xlsx, .xls" />
+          </form>
           <el-button type="warning" @click="uploadShow" plain>
             <span class="icon">
               <el-icon><Download /></el-icon>
             </span>
             导入
           </el-button>
+          <UploadDialog ref="uploadDialog" @uploadClickEmit="uploadInputClick" />
         </div>
         <div v-if="prop.contentConfig.dataHeader" class="exportUser">
           <el-button type="success" @click="exportExcel" plain>
@@ -104,6 +107,7 @@
 import { nextTick, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import PageDialog from '../pageDialog/pageDialog.vue'
+import UploadDialog from '../uploadDialog/uploadDialog.vue'
 import useSystem from '@/stores/modules/main/system'
 import useMain from '@/stores/modules/main/main'
 import type { ElTree } from 'element-plus'
@@ -130,7 +134,6 @@ interface IContent {
   }
 }
 const prop = defineProps<IContent>()
-
 const systemStore = useSystem()
 const { pageDepartmentList, pageTotalCount } = storeToRefs(systemStore)
 const currentPage = ref(1)
@@ -159,7 +162,17 @@ const postListInfo = (data?: any, exportNumber?: number) => {
 postListInfo()
 // 导入Excel表格
 const uploadInput = ref<HTMLElement>()
-const uploadShow = () => uploadInput.value?.click()
+const uploadForm = ref<HTMLFormElement>()
+const uploadDialog = ref<InstanceType<typeof UploadDialog>>()
+const uploadShow = () => {
+  // 清空上一次传入的文件
+  uploadForm.value?.reset()
+  uploadDialog.value!.toggleDialog()
+}
+const uploadInputClick = () => {
+  uploadDialog.value!.toggleDialog()
+  uploadInput.value!.click()
+}
 async function uploadClick(event: any) {
   const files = event.target.files
   const rawFile = files[0] // only use files[0]
@@ -174,7 +187,6 @@ async function uploadClick(event: any) {
     size: pageSize.value
   })
 }
-
 // 导出Excel表格
 const exportExcel = () => {
   if (prop.contentConfig.titleHeader && prop.contentConfig.dataHeader) {
