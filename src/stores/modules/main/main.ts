@@ -31,20 +31,19 @@ const useMain = defineStore('main',{
     },
 
     // 公共函数
-    async postPageSelectListAction(pageName: string) {
+    async postPageSelectListAction(pageName: string, info?: any) {
       if (pageName === 'role') {
-        const res = await postPageList(pageName)
+        const res = await postPageList(pageName, info)
         this.roleList = res.data.list
         this.PageList = this.roleList
       } else if (pageName === 'department'){
-        const res = await postPageList(pageName)
+        const res = await postPageList(pageName, info)
         this.departmentList = res.data.list
         this.PageList = this.departmentList
       } else {
-        const res = await postPageList(pageName)
+        const res = await postPageList(pageName, info)
         this.PageList = res.data.list
       }
-
     }
   }
   

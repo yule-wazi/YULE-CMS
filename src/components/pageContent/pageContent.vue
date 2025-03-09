@@ -11,7 +11,7 @@
             <span class="icon">
               <el-icon><Download /></el-icon>
             </span>
-            导入 
+            导入
           </el-button>
         </div>
         <div v-if="prop.contentConfig.dataHeader" class="exportUser">
@@ -196,7 +196,9 @@ const exportExcel = () => {
 const mainStore = useMain()
 const createUser = () => {
   if (pageDialogRef.value) {
-    mainStore.postPageSelectListAction(prop.contentConfig.selectName ?? prop.contentConfig.pageName)
+    mainStore.postPageSelectListAction(prop.contentConfig.selectName ?? prop.contentConfig.pageName, {
+      size: pageTotalCount.value
+    })
     pageDialogRef.value.showDialog()
     pageDialogRef.value.isEdit = false
     // 清空表单勾选框

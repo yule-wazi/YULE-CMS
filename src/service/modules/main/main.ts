@@ -19,8 +19,9 @@ export function postMenuList() {
 }
 
 // 公共函数
-export function postPageList(pageName: string) {
+export function postPageList(pageName: string, info?: any) {
   return hyRequest.post({
-    url: `${pageName}/list`
+    url: `${pageName}/list`,
+    data: info
   })
 }
