@@ -48,6 +48,7 @@ declare module 'vue' {
     ElTabs: typeof import('element-plus/es')['ElTabs']
     ElTooltip: typeof import('element-plus/es')['ElTooltip']
     ElTree: typeof import('element-plus/es')['ElTree']
+    ElUpload: typeof import('element-plus/es')['ElUpload']
     HeaderCrumb: typeof import('./src/components/mainHeader/cpns/headerCrumb.vue')['default']
     HeaderInfo: typeof import('./src/components/mainHeader/cpns/headerInfo.vue')['default']
     LineEchart: typeof import('./src/components/pageEcharts/src/lineEchart.vue')['default']

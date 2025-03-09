@@ -5,8 +5,17 @@
         {{ prop.contentConfig.header.headerTitle ?? '数据列表' }}
       </div>
       <div class="handleBtn">
-        <div class="exportUser">
-          <el-button v-if="prop.contentConfig.dataHeader" type="success" @click="exportExcel" plain>
+        <div v-if="isCreate" class="uploadUser">
+          <input ref="uploadInput" class="upload" type="file" @change="uploadClick" accept=".xlsx, .xls" />
+          <el-button type="warning" @click="uploadShow" plain>
+            <span class="icon">
+              <el-icon><Download /></el-icon>
+            </span>
+            导入 
+          </el-button>
+        </div>
+        <div v-if="prop.contentConfig.dataHeader" class="exportUser">
+          <el-button type="success" @click="exportExcel" plain>
             <span class="icon">
               <el-icon><Upload /></el-icon>
             </span>
@@ -18,7 +27,8 @@
             <span class="icon">
               <el-icon><Plus /></el-icon>
             </span>
-            {{ prop.contentConfig.header.buttonTitle ?? '新建列表' }}</el-button>
+            {{ prop.contentConfig.header.buttonTitle ?? '新建列表' }}</el-button
+          >
         </div>
       </div>
     </div>
@@ -100,6 +110,7 @@ import type { ElTree } from 'element-plus'
 import { formatUTC } from '@/utils/format'
 import { mapSubMenuId } from '@/utils/mapMenus'
 import { export_json_to_excel, formatData } from '@/utils/exportToExcel'
+import { readerData } from '@/utils/uploadToExcel'
 import permissionHook from '@/hook/permissionHook'
 
 interface IContent {
@@ -146,6 +157,24 @@ const postListInfo = (data?: any, exportNumber?: number) => {
   )
 }
 postListInfo()
+// 导入Excel表格
+const uploadInput = ref<HTMLElement>()
+const uploadShow = () => uploadInput.value?.click()
+async function uploadClick(event: any) {
+  const files = event.target.files
+  const rawFile = files[0] // only use files[0]
+  if (!rawFile) return
+  const data = (await readerData(rawFile)) as any[]
+  //创建请求
+  await data.forEach((item) => systemStore.postPageNewDepartmentAction(prop.contentConfig.pageName, item))
+  // 重新请求数据
+  mainStore.postMenuListAction()
+  systemStore.postPageDepartmentListAction(prop.contentConfig.pageName, {
+    offset: 0,
+    size: pageSize.value
+  })
+}
+
 // 导出Excel表格
 const exportExcel = () => {
   if (prop.contentConfig.titleHeader && prop.contentConfig.dataHeader) {
@@ -244,16 +273,25 @@ defineExpose({ postListInfo })
     }
     .handleBtn {
       display: flex;
-      .addUser {
+      .uploadUser {
+        margin-right: 10px;
+        .icon {
+          margin-right: 5px;
+        }
+        .upload {
+          display: none;
+        }
+      }
+      .exportUser {
+        margin-right: 10px;
         .icon {
           margin-right: 5px;
         }
       }
-      .exportUser {
+      .addUser {
         .icon {
           margin-right: 5px;
         }
-        margin-right: 10px;
       }
     }
   }
