@@ -19,7 +19,7 @@ function formatData(data: any[]) {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { __rowNum__, ...res } = item
     if (res.menuList) {
-      res.menuList = res.menuList.split(', ').map(Number)
+      res.menuList = res.menuList.split(/[,，]\s*/).map(Number)
     }
     return res
   })

@@ -52,13 +52,11 @@ interface IDialog {
   }
   otherInfo?: any
 }
-
 // 接收父组件
 const prop = defineProps<IDialog>()
 const centerDialogVisible = ref(false)
 // 判断是否为编辑模式
 const isEdit = ref(false)
-
 const mainStore = useMain()
 const { PageList } = storeToRefs(mainStore)
 
@@ -69,7 +67,6 @@ for (const key of dialogFormList) {
     formList[key.prop] = ''
   }
 }
-
 const form = reactive(formList)
 const userId = ref(0)
 const systemStore = useSystem()
@@ -77,11 +74,9 @@ const systemStore = useSystem()
 let formInfo = form
 const confirmBtn = () => {
   centerDialogVisible.value = false
-
   if (prop.otherInfo) {
     formInfo = { ...formInfo, ...prop.otherInfo }
   }
-
   if (isEdit.value) {
     // // 修改用户
     systemStore.updatePageDepartmentAction(prop.dialogConfig.pageName, formInfo, userId.value).then(() => {

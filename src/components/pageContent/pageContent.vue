@@ -18,7 +18,7 @@
           <UploadDialog ref="uploadDialog" @uploadClickEmit="uploadInputClick" @importClickEmit="importInputClick" />
         </div>
         <div v-if="prop.contentConfig.dataHeader" class="exportUser">
-          <el-button type="success" @click="exportExcel" plain>
+          <el-button type="success" @click="exportExcel(false)" plain>
             <span class="icon">
               <el-icon><Upload /></el-icon>
             </span>
@@ -192,7 +192,7 @@ async function uploadClick(event: any) {
   })
 }
 // 导出Excel表格
-const exportExcel = (isTemplate?: any) => {
+const exportExcel = (isTemplate?: boolean) => {
   if (isTemplate && prop.contentConfig.templateHeader) {
     export_json_to_excel({
       header: prop.contentConfig.templateHeader,
@@ -254,6 +254,10 @@ const deleteUser = (id: number) => {
 const ElTreeRef = ref<InstanceType<typeof ElTree>>()
 // 编辑用户
 const editUser = (userInfo: any) => {
+  systemStore.postPageDepartmentListAction(prop.contentConfig.pageName, {
+    offset: 0,
+    size: pageSize.value
+  })
   if (pageDialogRef.value) {
     mainStore.postPageSelectListAction(prop.contentConfig.selectName ?? prop.contentConfig.pageName)
     pageDialogRef.value.showDialog()
