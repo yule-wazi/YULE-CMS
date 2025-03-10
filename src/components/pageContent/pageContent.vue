@@ -15,7 +15,7 @@
             </span>
             导入
           </el-button>
-          <UploadDialog ref="uploadDialog" @uploadClickEmit="uploadInputClick" />
+          <UploadDialog ref="uploadDialog" @uploadClickEmit="uploadInputClick" @importClickEmit="importInputClick" />
         </div>
         <div v-if="prop.contentConfig.dataHeader" class="exportUser">
           <el-button type="success" @click="exportExcel" plain>
@@ -124,8 +124,9 @@ interface IContent {
     header: any
     pageList: any[]
     childrenTree?: any
-    titleHeader?: any[]
-    dataHeader?: any[]
+    titleHeader?: string[]
+    dataHeader?: string[]
+    templateHeader?: string[]
   }
   dialogConfig: {
     pageName: string
@@ -160,19 +161,22 @@ const postListInfo = (data?: any, exportNumber?: number) => {
   )
 }
 postListInfo()
-// 导入Excel表格
+
 const uploadInput = ref<HTMLElement>()
 const uploadForm = ref<HTMLFormElement>()
 const uploadDialog = ref<InstanceType<typeof UploadDialog>>()
+// 展示导入弹窗
 const uploadShow = () => {
   // 清空上一次传入的文件
   uploadForm.value?.reset()
   uploadDialog.value!.toggleDialog()
 }
+// 导入模板确定
 const uploadInputClick = () => {
   uploadDialog.value!.toggleDialog()
   uploadInput.value!.click()
 }
+//导入Excel模板
 async function uploadClick(event: any) {
   const files = event.target.files
   const rawFile = files[0] // only use files[0]
@@ -188,8 +192,16 @@ async function uploadClick(event: any) {
   })
 }
 // 导出Excel表格
-const exportExcel = () => {
-  if (prop.contentConfig.titleHeader && prop.contentConfig.dataHeader) {
+const exportExcel = (isTemplate?: any) => {
+  if (isTemplate && prop.contentConfig.templateHeader) {
+    export_json_to_excel({
+      header: prop.contentConfig.templateHeader,
+      data: [],
+      filename: `${prop.contentConfig.pageName}——导入模板`,
+      autoWidth: true,
+      bookType: 'xlsx'
+    })
+  } else if (!isTemplate && prop.contentConfig.titleHeader && prop.contentConfig.dataHeader) {
     const titleHeader = prop.contentConfig.titleHeader
     const dataHeader = prop.contentConfig.dataHeader
     postListInfo(undefined, pageTotalCount.value)?.then((response) => {
@@ -203,6 +215,10 @@ const exportExcel = () => {
       })
     })
   }
+}
+// 导出Excel模板
+const importInputClick = () => {
+  exportExcel(true)
 }
 // 新建用户
 const mainStore = useMain()

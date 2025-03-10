@@ -15,7 +15,8 @@ const contentConfig = {
     { type: 'handle', label: '操作', width: '120' }
   ],
   titleHeader: ['ID', '部门名称', '部门领导', '创建事件', '更新事件'],
-  dataHeader: ['id','name', 'leader', 'createAt', 'updateAt']
+  dataHeader: ['id', 'name', 'leader', 'createAt', 'updateAt'],
+  templateHeader: ['name', 'parentId', 'leader']
 }
 
 export default contentConfig

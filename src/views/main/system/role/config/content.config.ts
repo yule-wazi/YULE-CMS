@@ -41,7 +41,8 @@ const contentConfig = {
     }
   ],
   titleHeader: ['ID', '角色名称', '角色介绍', '创建时间', '更新时间'],
-  dataHeader: ['id', 'name', 'intro', 'createAt', 'updateAt']
+  dataHeader: ['id', 'name', 'intro', 'createAt', 'updateAt'],
+  templateHeader: ['name', 'intro', 'menuList']
 }
 
 export default contentConfig

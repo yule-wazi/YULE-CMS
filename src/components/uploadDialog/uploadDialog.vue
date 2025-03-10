@@ -3,7 +3,7 @@
     <el-dialog v-model="centerDialogVisible" title="文件导入" width="350" center>
       <div class="tip">
         <span class="text">请根据模板格式填写文件</span>
-        <el-button type="success" plain>
+        <el-button type="success" @click="importClick" plain>
             <span class="icon">
               <el-icon><Upload /></el-icon>
             </span>
@@ -28,9 +28,12 @@ import { ref } from 'vue'
 
 const centerDialogVisible = ref(false)
 
-const emit = defineEmits(['uploadClickEmit'])
+const emit = defineEmits(['uploadClickEmit', 'importClickEmit'])
 const uploadClick = () => {
   emit('uploadClickEmit')
+}
+const importClick = () => {
+  emit('importClickEmit')
 }
 const toggleDialog = () => {
   centerDialogVisible.value = !centerDialogVisible.value

@@ -17,7 +17,10 @@ export function readerData(rawFile: any) {
 function formatData(data: any[]) {
   return data.map((item) => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const {__rowNum__, ...res} = item
+    const { __rowNum__, ...res } = item
+    if (res.menuList) {
+      res.menuList = res.menuList.split(', ').map(Number)
+    }
     return res
   })
 }
