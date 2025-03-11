@@ -1,33 +1,20 @@
 <template>
   <div class="user">
-    <div class="search">
-      <UserSearch
-        @searchBtnEmit="handleSearchBtnEmit"
-        @resetBtnEmit="handleResetBtnEmit"
-      />
-    </div>
-    <div class="content">
-      <UserContent
-        ref="userContentRef"
-      />
-    </div>
+    <PageSearch :searchConfig="searchConfig" @searchBtnEmit="handleSearchBtnEmit" @resetBtnEmit="handleResetBtnEmit" />
+    <PageContent ref="pagecontentRef" :contentConfig="contentConfig" :dialogConfig="dialogConfig" />
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-import UserContent from './cpns/userContent.vue'
-import UserSearch from './cpns/userSearch.vue'
-const userContentRef = ref<InstanceType<typeof UserContent>>()
+import PageSearch from '@/components/pageSearch/pageSearch.vue'
+import PageContent from '@/components/pageContent/pageContent.vue'
+import searchConfig from './config/search.config'
+import contentConfig from './config/content.config'
+import dialogConfig from './config/dialog.config'
+import pageHook from '@/hook/pageHook'
 
-// 搜索
-const handleSearchBtnEmit = (form: any) => {
-  userContentRef.value?.fetchUserListInfo(form)
-}
-//重置
-const handleResetBtnEmit = () => {
-  userContentRef.value?.fetchUserListInfo()
-}
+
+const { pagecontentRef, handleResetBtnEmit, handleSearchBtnEmit } = pageHook()
 </script>
 
 <style lang="less" scoped>

@@ -240,6 +240,7 @@ const createUser = () => {
     for (const key in form) {
       form[key] = ''
     }
+    pageDialogRef.value.form = form
   }
 }
 //删除用户

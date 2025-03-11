@@ -21,6 +21,9 @@ function formatData(data: any[]) {
     if (res.menuList) {
       res.menuList = res.menuList.split(/[,，]\s*/).map(Number)
     }
+    if (res.password) {
+      res.password = res.password.toString()
+    }
     return res
   })
 }

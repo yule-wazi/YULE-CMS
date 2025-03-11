@@ -8,7 +8,7 @@
               <template v-if="item.type === 'input'">
                 <el-input v-model="form[item.prop]" :placeholder="item.placeholder" />
               </template>
-              <template v-if="item.type === 'date-picker'">
+              <template v-else-if="item.type === 'date-picker'">
                 <el-date-picker
                   v-model="form.createAt"
                   type="daterange"
@@ -19,15 +19,19 @@
                   style="width: 100%"
                 />
               </template>
+              <template v-else-if="item.type === 'enable'">
+                <el-select v-model="form.enable" placeholder="请选择查询的状态">
+                  <el-option label="启用" value="1" />
+                  <el-option label="禁用" value="0" />
+                </el-select>
+              </template>
             </el-form-item>
           </el-col>
         </template>
       </el-row>
       <div class="btn">
         <el-button icon="Refresh" @click="resetBtn">重置</el-button>
-        <el-button type="primary" icon="Search" @click="searchBtn"
-          >查询</el-button
-        >
+        <el-button type="primary" icon="Search" @click="searchBtn">查询</el-button>
       </div>
     </el-form>
   </div>

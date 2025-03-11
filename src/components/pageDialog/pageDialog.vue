@@ -16,10 +16,15 @@
           <template v-else-if="item.type === 'select'">
             <el-form-item v-bind="item">
               <el-select v-model="form[item.prop]" :placeholder="item.placeholder">
-                <template v-for="select in PageList" :key="select.value">
+                <template v-for="select in switchList(item.prop)" :key="select.value">
                   <el-option :label="select.name" :value="select.id" />
                 </template>
               </el-select>
+            </el-form-item>
+          </template>
+          <template v-else-if="item.type === 'password' && !isEdit">
+            <el-form-item v-bind="item">
+              <el-input v-model="form[item.prop]" :placeholder="item.placeholder" show-password />
             </el-form-item>
           </template>
           <template v-else-if="item.type === 'custom'">
@@ -58,7 +63,18 @@ const centerDialogVisible = ref(false)
 // 判断是否为编辑模式
 const isEdit = ref(false)
 const mainStore = useMain()
-const { PageList } = storeToRefs(mainStore)
+const { PageList, departmentList, roleList } = storeToRefs(mainStore)
+// 选择展示列表
+const switchList = (itemName: any) => {
+  switch (itemName) {
+    case 'roleId':
+      return roleList.value
+    case 'departmentId':
+      return departmentList.value
+    default:
+      return PageList.value
+  }
+}
 
 const formList: any = {}
 const dialogFormList: any = prop.dialogConfig.formList
@@ -67,19 +83,19 @@ for (const key of dialogFormList) {
     formList[key.prop] = ''
   }
 }
-const form = reactive(formList)
 const userId = ref(0)
 const systemStore = useSystem()
+const form = reactive(formList)
 // 表单确定
-let formInfo = form
 const confirmBtn = () => {
   centerDialogVisible.value = false
   if (prop.otherInfo) {
-    formInfo = { ...formInfo, ...prop.otherInfo }
+    // form = { ...form, ...prop.otherInfo }
+    Object.assign(form, prop.otherInfo)
   }
   if (isEdit.value) {
     // // 修改用户
-    systemStore.updatePageDepartmentAction(prop.dialogConfig.pageName, formInfo, userId.value).then(() => {
+    systemStore.updatePageDepartmentAction(prop.dialogConfig.pageName, form, userId.value).then(() => {
       // 重新请求数据
       mainStore.postMenuListAction()
       systemStore.postPageDepartmentListAction(prop.dialogConfig.pageName, {
@@ -89,7 +105,7 @@ const confirmBtn = () => {
     })
   } else {
     // 创建用户
-    systemStore.postPageNewDepartmentAction(prop.dialogConfig.pageName, formInfo).then(() => {
+    systemStore.postPageNewDepartmentAction(prop.dialogConfig.pageName, form).then(() => {
       // 重新请求数据
       mainStore.postMenuListAction()
       systemStore.postPageDepartmentListAction(prop.dialogConfig.pageName, {
