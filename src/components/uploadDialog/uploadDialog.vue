@@ -7,7 +7,7 @@
             <span class="icon">
               <el-icon><Upload /></el-icon>
             </span>
-            模板导出
+            点击下载
         </el-button>
       </div>
       <div class="uploadClick">

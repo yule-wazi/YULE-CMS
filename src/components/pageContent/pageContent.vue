@@ -171,16 +171,18 @@ const uploadShow = () => {
   uploadForm.value?.reset()
   uploadDialog.value!.toggleDialog()
 }
-// 导入模板确定
+// 点击导入Excel
 const uploadInputClick = () => {
   uploadDialog.value!.toggleDialog()
   uploadInput.value!.click()
 }
-//导入Excel模板
+//导入Excel确定
 async function uploadClick(event: any) {
   const files = event.target.files
   const rawFile = files[0] // only use files[0]
-  if (!rawFile) return
+  // 上传Excel大小不得大于1MB
+  const allowSize = rawFile.size / 1024 / 1024 < 1
+  if (allowSize && !rawFile) return
   const data = (await readerData(rawFile)) as any[]
   //创建请求
   await data.forEach((item) => systemStore.postPageNewDepartmentAction(prop.contentConfig.pageName, item))
