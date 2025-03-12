@@ -31,6 +31,8 @@ const contentConfig = {
       width: '180'
     },
     {
+      type: 'custom',
+      slotName: 'enableBtn',
       prop: 'enable',
       label: '状态',
       width: '100'

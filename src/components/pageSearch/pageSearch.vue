@@ -20,7 +20,7 @@
                 />
               </template>
               <template v-else-if="item.type === 'enable'">
-                <el-select v-model="form.enable" placeholder="请选择查询的状态">
+                <el-select v-model="form[item.prop]" :placeholder="item.placeholder">
                   <el-option label="启用" value="1" />
                   <el-option label="禁用" value="0" />
                 </el-select>

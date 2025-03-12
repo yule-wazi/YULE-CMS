@@ -30,6 +30,12 @@ const dialogConfig = {
       placeholder: '请输入电话号码'
     },
     {
+      type: 'enable',
+      prop: 'enable',
+      label: '用户状态',
+      placeholder: '请选择用户状态'
+    },
+    {
       type: 'select',
       prop: 'roleId',
       label: '选择角色',

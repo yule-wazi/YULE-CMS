@@ -27,6 +27,14 @@
               <el-input v-model="form[item.prop]" :placeholder="item.placeholder" show-password />
             </el-form-item>
           </template>
+          <template v-else-if="item.type === 'enable'">
+            <el-form-item v-bind="item">
+              <el-select v-model="form[item.prop]" :placeholder="item.placeholder">
+                <el-option label="启用" value="1" />
+                <el-option label="禁用" value="0" />
+              </el-select>
+            </el-form-item>
+          </template>
           <template v-else-if="item.type === 'custom'">
             <slot :name="item.slotName"></slot>
           </template>
